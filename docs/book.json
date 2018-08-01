@@ -1,0 +1,9 @@
+{
+  "title": "OneHub Manual",
+  "description": "OneHub Manual",
+  "author": "Allen Luo <movoin@gmail.com>",
+  "language": "zh-hans",
+  "plugins":[
+    "-sharing"
+  ]
+}
