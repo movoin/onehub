@@ -1,9 +1,9 @@
 {
-  "name": "one/swoole-project",
+  "name": "one/hub",
   "description": "Just one swoole framework.",
   "type": "library",
   "license": "Apache-2.0",
-  "homepage": "https://gitlab.com/onelab/one.swoole.project",
+  "homepage": "https://gitlab.com/onelab/one.hub",
   "authors": [
     {
       "name": "Allen Luo",
@@ -13,12 +13,13 @@
   ],
   "autoload": {
     "psr-4": {
-      "App\\": "app/"
+      "OneHub\\": "app/",
+      "OneHub\\Backends\\": "backends/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Tests\\": "tests/"
+      "OneHub\\Tests\\": "tests/"
     }
   },
   "require": {
@@ -42,9 +43,9 @@
   "scripts": {
     "phpunit": "phpunit -c ./phpunit.xml",
     "phpcs": "phpcs -p --basepath=./ --runtime-set ignore_errors_on_exit 1 --runtime-set ignore_warnings_on_exit 1",
-    "parallel-lint": "parallel-lint ./src",
-    "var-dump-check": "var-dump-check --no-colors --exclude vendor/ --extensions php src",
-    "fix-style": "phpcbf -p --standard=PSR2 --runtime-set ignore_errors_on_exit 1 --runtime-set ignore_warnings_on_exit 1 src"
+    "parallel-lint": "parallel-lint ./app",
+    "var-dump-check": "var-dump-check --no-colors --exclude vendor/ --extensions php app",
+    "fix-style": "phpcbf -p --standard=PSR2 --runtime-set ignore_errors_on_exit 1 --runtime-set ignore_warnings_on_exit 1 app"
   },
   "config": {
     "preferred-install": "dist",
