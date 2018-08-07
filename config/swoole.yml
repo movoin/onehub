@@ -22,7 +22,7 @@ task_ipc_mode: 2
 # 通信管道内存缓存区长度，只在 task_ipc_mode = 1 时有效
 pipe_buffer_size: 33554432
 # 内存消息队列名称，只在 task_ipc_mode = 2/3 时有效
-message_queue_key: one
+message_queue_key: onehub
 # 数据包分发策略 (1: 轮循; 2: 固定; 3: 抢占; 4: IP 分配; 5: UID 分配)
 dispatch_mode: 3
 # Listen 队列长度

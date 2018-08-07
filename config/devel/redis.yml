@@ -1,0 +1,7 @@
+---
+#
+# Redis 配置
+#
+host: redis
+port: 6379
+...
