@@ -79,6 +79,7 @@ GitHub.sublime-settings
 /build/
 
 ### OneHub ###
+/data/*
 /runtime/local/*
 /runtime/logs/*
 /runtime/var/*
