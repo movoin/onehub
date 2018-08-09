@@ -78,7 +78,7 @@ GitHub.sublime-settings
 ### PHPUnit ###
 /build/
 
-### Example ###
+### OneHub ###
 /runtime/local/*
 /runtime/logs/*
 /runtime/var/*

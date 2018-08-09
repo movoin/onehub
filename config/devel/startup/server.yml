@@ -1,3 +1,4 @@
 ---
 # Server 启动项
+- One\Hub\Service\Providers\ManagerProvider
 ...

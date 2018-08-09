@@ -14,5 +14,5 @@
       <type>error</type>
     </rule>
     <!-- Paths to check -->
-    <file>src</file>
+    <file>app</file>
 </ruleset>

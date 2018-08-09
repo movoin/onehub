@@ -7,5 +7,4 @@
 listen: 0.0.0.0:9501
 # 协议类型 http | tcp | udp | websocket
 protocol: http
-
 ...

@@ -1,0 +1,11 @@
+---
+#
+# 服务配置
+#
+
+# Redis 存储配置
+storage:
+  host: redis
+
+# Service 配置
+...
