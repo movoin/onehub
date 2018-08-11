@@ -5,8 +5,8 @@ image: movoin/devops-swoole:2
 #   paths:
 #   - vendor/
 
-before_script:
-- composer install
+# before_script:
+# - composer install
 # - pecl install xdebug
 # - echo 'zend_extension=xdebug.so' > /etc/php/conf.d/xdebug.ini
 # - echo 'zlib.output_compression = 1' > /etc/php/conf.d/zlib.ini
