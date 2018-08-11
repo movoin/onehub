@@ -12,33 +12,31 @@
 
 namespace One\Hub\Service;
 
-use RuntimeException;
-use InvalidArgumentException;
-use One\Redis\Client;
+use One\Hub\Service\Exceptions\ServiceException;
+use One\Redis\Manager as Redis;
 use One\Support\Helpers\Arr;
+use One\Support\Helpers\DateTime;
 
 class Manager
 {
-    const HASH_KEY = 's';
-
     const STATUS_ON = 'on';
     const STATUS_OFF = 'off';
 
     /**
      * 服务对象
      *
-     * @var \One\Redis\Client
+     * @var \One\Redis\Manager
      */
-    private $client;
+    private $manager;
 
     /**
      * 构造
      *
-     * @param \One\Redis\Client $client
+     * @param \One\Redis\Manager $manager
      */
-    public function __construct(Client $client)
+    public function __construct(Redis $manager)
     {
-        $this->client = $client;
+        $this->manager = $manager;
     }
 
     /**
@@ -46,8 +44,7 @@ class Manager
      */
     public function __destruct()
     {
-        $this->client->close();
-        $this->client = null;
+        $this->manager = null;
     }
 
     /**
@@ -59,7 +56,7 @@ class Manager
      */
     public function exists(string $name): bool
     {
-        return $this->client->hExists(self::HASH_KEY, $name);
+        return $this->manager->service->exists($name);
     }
 
     /**
@@ -69,7 +66,9 @@ class Manager
      */
     public function all(): array
     {
-        return $this->client->hGetAll(self::HASH_KEY);
+        return $this->manager->service->mGet(
+            $this->manager->service->keys('*')
+        );
     }
 
     /**
@@ -79,7 +78,7 @@ class Manager
      */
     public function count()
     {
-        return count($this->all());
+        return count($this->manager->service->keys('*'));
     }
 
     /**
@@ -88,23 +87,70 @@ class Manager
      * @param  array $service
      *
      * @return bool
-     * @throws \InvalidArgumentException
+     * @throws \One\Hub\Service\Exceptions\ServiceException
      */
     public function register(array $service): bool
     {
         $name = strtolower(trim(Arr::get($service, 'name', '')));
 
         if ($name === '') {
-            throw new InvalidArgumentException('服务名称未定义');
+            throw new ServiceException('服务名称未定义');
         }
 
         $service = $this->normalize($service);
 
-        if ($this->client->hget(self::HASH_KEY, $name) !== false) {
-            throw new RuntimeException(sprintf('服务名称 %s 已经注册', $name));
+        if ($this->manager->service->get($name) !== false) {
+            throw new ServiceException(sprintf('服务名称 %s 已经注册', $name));
         }
 
-        if ($this->client->hset(self::HASH_KEY, $name, $service)) {
+        if ($this->manager->service->set($name, $service)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * 删除服务
+     *
+     * @param  string $name
+     *
+     * @return bool
+     * @throws \One\Hub\Service\Exceptions\ServiceException
+     */
+    public function remove(string $name): bool
+    {
+        if (! $this->exists($name)) {
+            throw new ServiceException(sprintf('服务名称 %s 不存在', $name));
+        }
+
+        return $this->manager->service->del($name) > 0;
+    }
+
+    /**
+     * 设置服务状态
+     *
+     * @param  string $name
+     * @param  string $status
+     *
+     * @return bool
+     */
+    public function setStatus(string $name, string $status): bool
+    {
+        if (! $this->exists($name)) {
+            throw new ServiceException(sprintf('服务名称 %s 不存在', $name));
+        }
+
+        if (! in_array($status, [self::STATUS_ON, self::STATUS_OFF])) {
+            throw new ServiceException(
+                sprintf('服务状态 %s 不在允许范围: %s, %s', $name, self::STATUS_ON, self::STATUS_OFF)
+            );
+        }
+
+        $service = $this->info($name);
+        $service['status'] = $status;
+
+        if ($this->manager->service->set($name, $service)) {
             return true;
         }
 
@@ -117,16 +163,16 @@ class Manager
      * @param string $name
      *
      * @return array
-     * @throws \InvalidArgumentException
+     * @throws \One\Hub\Service\Exceptions\ServiceException
      */
     public function info(string $name): array
     {
         if ($name === '') {
-            throw new InvalidArgumentException('服务名称未定义');
+            throw new ServiceException('服务名称不能为空');
         }
 
-        if (($service = $this->client->hget(self::HASH_KEY, $name)) === false) {
-            throw new RuntimeException(sprintf('服务名称 %s 未注册', $name));
+        if (($service = $this->manager->service->get($name)) === false) {
+            throw new ServiceException(sprintf('服务名称 %s 未注册', $name));
         }
 
         return $this->normalize($service);
@@ -147,7 +193,8 @@ class Manager
             'engine'        => Arr::get($service, 'engine', ''),
             'backend'       => Arr::get($service, 'backend', ''),
             'schema'        => Arr::get($service, 'schema', []),
-            'status'        => Arr::get($service, 'status', self::STATUS_ON)
+            'status'        => Arr::get($service, 'status', self::STATUS_ON),
+            'created'       => Arr::get($service, 'created', DateTime::now())
         ];
     }
 }

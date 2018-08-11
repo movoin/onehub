@@ -72,10 +72,8 @@ EOF
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $service = $input->getArgument('service');
-
         $service = [
-            'name' => $service
+            'name' => $input->getArgument('service')
         ];
 
         // {{
@@ -104,20 +102,20 @@ EOF
 
         $manager = Factory::newManager();
 
-        if ($manager->exists($service)) {
-            $this->symfony()->error(sprintf('服务名称 %s 已注册', $service));
+        if ($manager->exists($service['name'])) {
+            $this->symfony()->error(sprintf('服务名称 %s 已注册', $service['name']));
             return 0;
         }
 
         $msg = '注册服务 <label>%s</> ';
 
         if ($manager->register($service)) {
-            $this->ok(sprintf($msg, $service));
+            $this->ok(sprintf($msg, $service['name']));
         } else {
-            $this->fail(sprintf($msg, $service));
+            $this->fail(sprintf($msg, $service['name']));
         }
 
-        unset($manager);
+        unset($manager, $msg, $service);
 
         $this->newLine();
 

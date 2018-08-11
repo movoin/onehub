@@ -50,9 +50,8 @@ class InfoCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $service = $input->getArgument('service');
-
         $manager = Factory::newManager();
+        $service = $input->getArgument('service');
 
         // {{
         $this->title('服务信息');
@@ -75,7 +74,7 @@ class InfoCommand extends Command
             );
         }
 
-        unset($manager, $info);
+        unset($manager, $info, $service);
 
         $this->newLine();
 

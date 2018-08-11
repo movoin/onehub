@@ -4,8 +4,6 @@
 #
 
 # Redis 存储配置
-storage:
+service:
   host: redis
-
-# Service 配置
 ...

@@ -58,11 +58,9 @@ class ListCommand extends Command
             return 0;
         }
 
-        $services = array_filter(
-            $manager->all(), function ($val) {
-                return isset($val['name']);
-            }
-        );
+        $services = array_filter($manager->all(), function ($val) {
+            return isset($val['name']);
+        });
 
         foreach ($services as $service) {
             if (isset($service['name'])) {

@@ -13,6 +13,7 @@
 namespace One\Hub\Service\Commands;
 
 use One\Console\Command;
+use One\Hub\Service\Factory;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -48,5 +49,22 @@ class StatusCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $manager = Factory::newManager();
+        $service = $input->getArgument('service');
+
+        // {{
+        $this->title('服务状态');
+        // }}
+
+        if (! $manager->exists($service)) {
+            $this->symfony()->error(sprintf('服务名称 %s 未注册', $service));
+            return 0;
+        }
+
+        unset($manager, $service);
+
+        $this->newLine();
+
+        return 0;
     }
 }

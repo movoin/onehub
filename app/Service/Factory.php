@@ -13,7 +13,7 @@
 namespace One\Hub\Service;
 
 use One\Config;
-use One\Redis\Client;
+use One\Redis\Manager as Redis;
 
 abstract class Factory
 {
@@ -25,7 +25,7 @@ abstract class Factory
     public static function newManager(): Manager
     {
         return new Manager(
-            new Client(Config::get('service.storage', []))
+            new Redis(Config::get('service', []))
         );
     }
 }
