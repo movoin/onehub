@@ -4,8 +4,8 @@
     * [安装](install.md)
     * [名词概念](glossary.md)
 
-* 服务接口
+* 服务引擎
 
-    * [日志](api/log.md)
-    * [跟踪](api/trace.md)
-    * [统计](api/stats.md)
+    * [日志](engines/log.md)
+    * [跟踪](engines/trace.md)
+    * [统计](engines/stats.md)
