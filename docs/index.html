@@ -8,10 +8,10 @@
   <link rel="icon" href="static/favicon.ico">
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <link rel="stylesheet" href="//unpkg.com/docsify/lib/themes/vue.css">
-  <style>.markdown-section{max-width:85% !important;}</style>
+  <style>.markdown-section{max-width:80% !important;}</style>
 </head>
 <body>
-  <div id="app">加载中...</div>
+  <div id="app">等会儿吧，马上就好...</div>
   <script>
     window.$docsify = {
       name: 'OneHub',
@@ -31,9 +31,22 @@
           '/': '搜索'
         }
       },
+      plugins: [
+        function (hook, vm) {
+          hook.beforeEach(function (html) {
+            return html
+              + '\n\n----\n\n'
+              + '<a href="https://gitlab.com/onelab" target="_blank" style="color: inherit; font-weight: normal; text-decoration: none;">Powered by onelab</a>'
+          })
+        }
+      ]
     }
   </script>
   <script src="//unpkg.com/docsify/lib/docsify.min.js"></script>
   <script src="//unpkg.com/docsify/lib/plugins/search.min.js"></script>
+  <script src="//unpkg.com/prismjs/components/prism-bash.min.js"></script>
+  <script src="//unpkg.com/prismjs/components/prism-php.min.js"></script>
+  <script src="//unpkg.com/prismjs/components/prism-json.min.js"></script>
+  <script src="//unpkg.com/prismjs/components/prism-http.min.js"></script>
 </body>
 </html>

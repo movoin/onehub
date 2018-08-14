@@ -12,4 +12,13 @@
 
 * 命令行工具
 
+    * [容器操作](console/container.md)
     * [服务操作](console/service.md)
+
+* 应用场景
+
+    * [消费日志](examples/transaction_log.md)
+
+* 其它
+
+    * [自定义数据结构](others/custom_schema.md)
