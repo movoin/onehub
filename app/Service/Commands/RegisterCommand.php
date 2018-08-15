@@ -14,6 +14,8 @@ namespace One\Hub\Service\Commands;
 
 use One\Console\Command;
 use One\Hub\Service\Factory;
+use One\Support\Helpers\Json;
+use One\Support\Exceptions\JsonException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -53,9 +55,10 @@ class RegisterCommand extends Command
 支持存储后端:
 
   <info>+ mysql</>
-  <info>+ redis</>
   <info>+ mongodb</>
   <info>+ elasticsearch</>
+
+自定义结构: <info>必须为 JSON 格式</>
 
 示例: <info>php %command.full_name% <comment>service</> <comment>log</> <comment>redis</></>
 
@@ -80,6 +83,13 @@ EOF
         $this->title('注册服务');
         // }}
 
+        $manager = Factory::newManager();
+
+        if ($manager->exists($service['name'])) {
+            $this->symfony()->error(sprintf('服务名称 %s 已注册', $service['name']));
+            return 0;
+        }
+
         if (($service['description'] = $input->getArgument('description')) === null) {
             $service['description'] = $this->symfony()->ask('填写服务描述', '');
         }
@@ -95,16 +105,27 @@ EOF
         if (($service['backend'] = $input->getArgument('backend')) === null) {
             $service['backend'] = $this->symfony()->choice(
                 '选择存储后端',
-                ['redis', 'mysql', 'mongodb', 'elasticsearch'],
-                'redis'
+                ['mysql', 'mongodb', 'elasticsearch'],
+                'mysql'
             );
         }
 
-        $manager = Factory::newManager();
+        if (($schema_path = $input->getOption('schema')) !== null) {
+            if (! file_exists($schema_path)) {
+                $this->symfony()->error(sprintf('自定义数据结构文件 %s 未找到', $schema_path));
+                return 0;
+            }
 
-        if ($manager->exists($service['name'])) {
-            $this->symfony()->error(sprintf('服务名称 %s 已注册', $service['name']));
-            return 0;
+            if (($json = file_get_contents($schema_path)) !== false) {
+                try {
+                    $service['schema'] = Json::decode($json);
+                } catch (JsonException $e) {
+                    $this->symfony()->error(
+                        sprintf('自定义数据结构文件 %s 无法解析: %s', $schema_path, $e->getMessage())
+                    );
+                    return 0;
+                }
+            }
         }
 
         $msg = '注册服务 <label>%s</> ';

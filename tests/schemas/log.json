@@ -1,0 +1,26 @@
+{
+    "array_field": {
+        "description": "Array Field",
+        "type": "Array",
+        "default": "Null"
+    },
+    "datetime_field": {
+        "description": "Datetime Field",
+        "type": "Datetime"
+    },
+    "float_field": {
+        "description": "Float Field",
+        "type": "Float",
+        "default": 1.0
+    },
+    "integer_field": {
+        "description": "Integer Field",
+        "type": "Integer",
+        "default": 1
+    },
+    "string_field": {
+        "description": "String Field",
+        "type": "String",
+        "default": "default value"
+    }
+}
