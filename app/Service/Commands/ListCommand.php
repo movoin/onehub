@@ -54,7 +54,7 @@ class ListCommand extends Command
         $manager = Factory::newManager();
 
         if ($manager->count() === 0) {
-            $this->symfony()->error('未注册任何服务');
+            $this->error('未注册任何服务');
             return 0;
         }
 
@@ -62,18 +62,26 @@ class ListCommand extends Command
             return isset($val['name']);
         });
 
-        foreach ($services as $service) {
-            if (isset($service['name'])) {
-                $this->status(
-                    sprintf('<label>%s</> 服务', $service['name']),
-                    sprintf('<success>%s</>', $service['status']),
-                    $service['status'] === 'on' ? 'success' : 'failure',
-                    $service['status'] === 'on' ? '√' : '×'
-                );
-            }
-        }
+        $format = [
+            ' <info>-></> <name> - <description>  |  ',
+            'Engine: <engine>  Backend: <backend>  Status: [<status>]  Created: <created>'
+        ];
 
-        unset($manager, $services);
+        foreach ($services as $service) {
+            unset($service['schema']);
+
+            $this->formatLine(
+                implode('', $format),
+                $service,
+                [
+                    'name' => 'highlight',
+                    'engine' => 'title',
+                    'backend' => 'title',
+                    'status' => $service['status'] === 'on' ? 'success' : 'failure',
+                    'created' => 'title',
+                ]
+            );
+        }
 
         return 0;
     }

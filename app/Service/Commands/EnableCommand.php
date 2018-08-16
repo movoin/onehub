@@ -57,20 +57,11 @@ class EnableCommand extends Command
         // }}
 
         if (! $manager->exists($service)) {
-            $this->symfony()->error(sprintf('服务名称 %s 未注册', $service));
+            $this->error(sprintf('服务名称 %s 未注册', $service));
             return 0;
         }
 
-        $msg = '启用服务 <label>%s</> ';
-
-        if ($manager->setStatus($service, 'on')) {
-            $this->ok(sprintf($msg, $service));
-        } else {
-            $this->fail(sprintf($msg, $service));
-        }
-
-        unset($manager, $service, $msg);
-
+        $this->result(sprintf('启用 <label>%s</> 服务', $service), $manager->setStatus($service, 'on'));
         $this->newLine();
 
         return 0;

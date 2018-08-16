@@ -57,11 +57,9 @@ class StatusCommand extends Command
         // }}
 
         if (! $manager->exists($service)) {
-            $this->symfony()->error(sprintf('服务名称 %s 未注册', $service));
+            $this->error(sprintf('服务名称 %s 未注册', $service));
             return 0;
         }
-
-        unset($manager, $service);
 
         $this->newLine();
 

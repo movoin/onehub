@@ -86,16 +86,16 @@ EOF
         $manager = Factory::newManager();
 
         if ($manager->exists($service['name'])) {
-            $this->symfony()->error(sprintf('服务名称 %s 已注册', $service['name']));
+            $this->error(sprintf('服务名称 %s 已注册', $service['name']));
             return 0;
         }
 
         if (($service['description'] = $input->getArgument('description')) === null) {
-            $service['description'] = $this->symfony()->ask('填写服务描述', '');
+            $service['description'] = $this->ask('填写服务描述', '');
         }
 
         if (($service['engine'] = $input->getArgument('engine')) === null) {
-            $service['engine'] = $this->symfony()->choice(
+            $service['engine'] = $this->choice(
                 '选择服务引擎',
                 ['log', 'trace', 'stats'],
                 'log'
@@ -103,7 +103,7 @@ EOF
         }
 
         if (($service['backend'] = $input->getArgument('backend')) === null) {
-            $service['backend'] = $this->symfony()->choice(
+            $service['backend'] = $this->choice(
                 '选择存储后端',
                 ['mysql', 'mongodb', 'elasticsearch'],
                 'mysql'
@@ -112,7 +112,7 @@ EOF
 
         if (($schema_path = $input->getOption('schema')) !== null) {
             if (! file_exists($schema_path)) {
-                $this->symfony()->error(sprintf('自定义数据结构文件 %s 未找到', $schema_path));
+                $this->error(sprintf('自定义数据结构文件 %s 未找到', $schema_path));
                 return 0;
             }
 
@@ -120,7 +120,7 @@ EOF
                 try {
                     $service['schema'] = Json::decode($json);
                 } catch (JsonException $e) {
-                    $this->symfony()->error(
+                    $this->error(
                         sprintf('自定义数据结构文件 %s 无法解析: %s', $schema_path, $e->getMessage())
                     );
                     return 0;
@@ -128,16 +128,7 @@ EOF
             }
         }
 
-        $msg = '注册服务 <label>%s</> ';
-
-        if ($manager->register($service)) {
-            $this->ok(sprintf($msg, $service['name']));
-        } else {
-            $this->fail(sprintf($msg, $service['name']));
-        }
-
-        unset($manager, $msg, $service);
-
+        $this->result('注册服务 <label>%s</> ', $manager->register($service));
         $this->newLine();
 
         return 0;

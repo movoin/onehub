@@ -58,14 +58,14 @@ class InfoCommand extends Command
         // }}
 
         if (! $manager->exists($service)) {
-            $this->symfony()->error(sprintf('服务名称 %s 未注册', $service));
+            $this->error(sprintf('服务名称 %s 未注册', $service));
             return 0;
         }
 
         $info = $manager->info($service);
 
         foreach ($info as $name => $value) {
-            $this->symfony()->writeln(
+            $this->writeln(
                 sprintf(
                     ' <info>%s</> %s',
                     str_pad(ucfirst($name), 12) . ':',
@@ -73,8 +73,6 @@ class InfoCommand extends Command
                 )
             );
         }
-
-        unset($manager, $info, $service);
 
         $this->newLine();
 
