@@ -17,11 +17,15 @@ use One\Redis\Manager as Redis;
 use One\Support\Helpers\Arr;
 use One\Support\Helpers\DateTime;
 
+/**
+ * 服务管理对象
+ *
+ * @package     One\Hub\Service
+ * @author      Allen Luo <movoin@gmail.com>
+ * @since       0.1
+ */
 class Manager
 {
-    const STATUS_ON = 'on';
-    const STATUS_OFF = 'off';
-
     /**
      * 服务对象
      *
@@ -141,9 +145,9 @@ class Manager
             throw new ServiceException(sprintf('服务名称 %s 不存在', $name));
         }
 
-        if (! in_array($status, [self::STATUS_ON, self::STATUS_OFF])) {
+        if (! in_array($status, ['on', 'off'])) {
             throw new ServiceException(
-                sprintf('服务状态 %s 不在允许范围: %s, %s', $name, self::STATUS_ON, self::STATUS_OFF)
+                sprintf('服务状态 %s 不在允许范围: %s, %s', $name, 'on', 'off')
             );
         }
 
@@ -193,7 +197,7 @@ class Manager
             'engine'        => Arr::get($service, 'engine', ''),
             'backend'       => Arr::get($service, 'backend', ''),
             'schema'        => Arr::get($service, 'schema', []),
-            'status'        => Arr::get($service, 'status', self::STATUS_ON),
+            'status'        => Arr::get($service, 'status', 'on'),
             'created'       => Arr::get($service, 'created', DateTime::now())
         ];
     }
