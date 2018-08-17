@@ -53,25 +53,15 @@ class RemoveCommand extends Command
         $service = $input->getArgument('service');
 
         if (! $manager->exists($service)) {
-            $this->symfony()->error(sprintf('服务名称 %s 未注册', $service));
+            $this->error(sprintf('服务名称 %s 未注册', $service));
             return 0;
         }
 
         // {{
         $this->title('删除服务');
-        // }}
-
-        $msg = '删除服务 <label>%s</> ';
-
-        if ($manager->remove($service)) {
-            $this->ok(sprintf($msg, $service));
-        } else {
-            $this->fail(sprintf($msg, $service));
-        }
-
-        unset($manager, $service, $msg);
-
+        $this->result('删除服务 <label>%s</> ', $manager->remove($service));
         $this->newLine();
+        // }}
 
         return 0;
     }

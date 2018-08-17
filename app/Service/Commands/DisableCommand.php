@@ -61,16 +61,7 @@ class DisableCommand extends Command
             return 0;
         }
 
-        $msg = '停用服务 <label>%s</> ';
-
-        if ($manager->setStatus($service, 'off')) {
-            $this->ok(sprintf($msg, $service));
-        } else {
-            $this->fail(sprintf($msg, $service));
-        }
-
-        unset($manager, $service, $msg);
-
+        $this->result(sprintf('停用 <label>%s</> 服务', $service), $manager->setStatus($service, 'off'));
         $this->newLine();
 
         return 0;

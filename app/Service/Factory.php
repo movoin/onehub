@@ -25,7 +25,7 @@ abstract class Factory
     public static function newManager(): Manager
     {
         return new Manager(
-            new Redis(Config::get('service', []))
+            new Redis(Config::get('setting.register', []))
         );
     }
 }
