@@ -22,7 +22,7 @@ class ManagerProvider extends Provider
      */
     public function register()
     {
-        $this->bind('service', function ($server) {
+        $this->bind('hub', function ($server) {
             return Factory::newManager();
         });
     }

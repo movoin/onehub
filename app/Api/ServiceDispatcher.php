@@ -33,5 +33,11 @@ class ServiceDispatcher extends Action
      */
     protected function run(Request $request)
     {
+        return (new Payload)->withData([
+            'request' => [
+                'service' => $request->getAttribute('service'),
+                'param' => $request->getAttribute('param')
+            ]
+        ]);
     }
 }
