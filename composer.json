@@ -3,12 +3,12 @@
   "description": "Just one swoole framework.",
   "type": "library",
   "license": "Apache-2.0",
-  "homepage": "https://gitlab.com/onelab/one.hub",
+  "homepage": "https://github.com/movoin/onehub",
   "authors": [
     {
       "name": "Allen Luo",
       "email": "movoin@gmail.com",
-      "homepage": "https://gitlab.com/onelab"
+      "homepage": "https://github.com/movoin"
     }
   ],
   "autoload": {
@@ -50,8 +50,7 @@
     "phpcs": "phpcs -p --basepath=./ --runtime-set ignore_errors_on_exit 1 --runtime-set ignore_warnings_on_exit 1",
     "parallel-lint": "parallel-lint ./app",
     "var-dump-check": "var-dump-check --no-colors --exclude vendor/ --extensions php app",
-    "fix-style": "phpcbf -p --standard=PSR2 --runtime-set ignore_errors_on_exit 1 --runtime-set ignore_warnings_on_exit 1 app",
-    "doc-serve": "docsify serve ./docs"
+    "fix-style": "phpcbf -p --standard=PSR2 --runtime-set ignore_errors_on_exit 1 --runtime-set ignore_warnings_on_exit 1 app"
   },
   "config": {
     "preferred-install": "dist",
