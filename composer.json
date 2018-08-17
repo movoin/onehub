@@ -25,8 +25,8 @@
     "php": "^7.0",
     "ext-json": "*",
     "ext-swoole": ">=2.1.0",
-    "onelab/swoole": ">=0.1.0",
-    "onelab/swoole-redis": ">=0.1"
+    "onelab/swoole": "0.2.x-dev",
+    "onelab/swoole-redis": "dev-master"
   },
   "require-dev": {
     "phpunit/phpunit": "^6.5",
