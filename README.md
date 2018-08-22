@@ -31,7 +31,6 @@ Help:
 
   支持存储后端:
     + mysql
-    + redis
     + mongodb
     + elasticsearch
 
