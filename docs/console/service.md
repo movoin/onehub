@@ -25,12 +25,11 @@ Help:
 
   支持存储后端:
     + mysql
-    + redis
     + mongodb
     + elasticsearch
 
   示例:
-    php ./onehub register service log redis
+    php ./onehub register service log mysql
 ```
 
 
